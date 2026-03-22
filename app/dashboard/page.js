@@ -51,12 +51,12 @@ export default async function Dashboard() {
           <span className="text-gray-400 text-sm">/ Panel</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link
-            href="/dashboard/menu"
-            className="text-sm text-gray-500 hover:text-gray-700"
-          >
-            Menú
-          </Link>
+          <Link href="/dashboard/menu" className="text-sm text-gray-500 hover:text-gray-700">
+  Menú
+</Link>
+<Link href="/dashboard/configuracion" className="text-sm text-gray-500 hover:text-gray-700">
+  Configuración
+</Link>
           <Link href="/api/auth/logout" className="text-sm text-gray-500 hover:text-gray-700">
             Cerrar sesión
           </Link>
