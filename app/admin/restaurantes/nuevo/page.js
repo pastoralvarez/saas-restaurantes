@@ -32,48 +32,36 @@ export default function NuevoRestaurante() {
   }
 
   async function handleSubmit(e) {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
+  e.preventDefault()
+  setLoading(true)
+  setError('')
 
-    try {
-      // 1. Crear restaurante
-      const { data: restaurante, error: errRest } = await supabase
-        .from('restaurantes')
-        .insert({
-          nombre: form.nombre,
-          subdominio: form.subdominio,
-          telefono: form.telefono,
-          whatsapp: form.whatsapp,
-          color_principal: form.color_principal,
-          direccion: form.direccion,
-        })
-        .select()
-        .single()
+  try {
+    const res = await fetch('/api/admin/crear-restaurante', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: form.nombre,
+        subdominio: form.subdominio,
+        telefono: form.telefono,
+        whatsapp: form.whatsapp,
+        color_principal: form.color_principal,
+        direccion: form.direccion,
+        email: form.email_owner,
+        password: form.password_owner,
+      }),
+    })
 
-      if (errRest) throw new Error(errRest.message)
+    const result = await res.json()
+    if (!res.ok) throw new Error(result.error)
 
-      // 2. Crear usuario owner via API
-      const res = await fetch('/api/admin/crear-restaurante', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          restaurante_id: restaurante.id,
-          email: form.email_owner,
-          password: form.password_owner,
-        }),
-      })
-
-      const result = await res.json()
-      if (!res.ok) throw new Error(result.error)
-
-      router.push('/admin')
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
+    router.push('/admin')
+  } catch (err) {
+    setError(err.message)
+  } finally {
+    setLoading(false)
   }
+}
 
   return (
     <div className="min-h-screen bg-gray-50">
